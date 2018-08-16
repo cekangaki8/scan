@@ -1,13 +1,12 @@
 package com.dpwn.smartscanus.sorting.ui;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dpwn.smartscanus.R;
-import com.dpwn.smartscanus.deliverynetwork.IDeliveryNetworkScanningInputPort;
-import com.dpwn.smartscanus.deliverynetwork.IDeliveryNetworkScanningOutputPort;
 import com.dpwn.smartscanus.events.RingBeepEvent;
 import com.dpwn.smartscanus.events.VibrateEvent;
 import com.dpwn.smartscanus.interactor.IInteractorInputPort;
@@ -18,6 +17,8 @@ import com.dpwn.smartscanus.sorting.ISortingServiceOutputPort;
 import com.dpwn.smartscanus.utils.PrefsConsts;
 import com.google.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ import roboguice.inject.InjectView;
 /**
  * Created by Darshan Patel on 08/10/2018.
  */
-public class linkSackFragment extends AsyncInteractorFragment implements ISortingServiceOutputPort {
-    private static final java.lang.String TAG = linkSackFragment.class.getSimpleName();
+public class LinkSackFragment extends AsyncInteractorFragment implements ISortingServiceOutputPort {
+    private static final java.lang.String TAG = LinkSackFragment.class.getSimpleName();
 
     @InjectView(R.id.genericBarcodeText)
     TextView tvGenericBarcode;
@@ -44,6 +45,12 @@ public class linkSackFragment extends AsyncInteractorFragment implements ISortin
     @Inject
     ISortingServiceInputPort interactor;
 
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        tvGenericBarcode.requestFocus();
+    }
     /**
      * Abstract method to get the interactors of the implementing Fragment
      *
@@ -66,14 +73,20 @@ public class linkSackFragment extends AsyncInteractorFragment implements ISortin
         if (outputPortHelper.isInProgress()) {
             tts("Please wait while in progress");
         } else {
-            if (tvGenericBarcode.isFocused() && !tvGenericBarcode.getText().toString().isEmpty() && tvFinalSlot.getText().toString().isEmpty()) {
+
+            if(!tvGenericBarcode.isFocused() && !tvFinalSlot.isFocused()) {
+                tvGenericBarcode.setText("");
+                tvFinalSlot.setText("");
+                tvGenericBarcode.requestFocus();
+            }
+
+            if (tvGenericBarcode.isFocused()) {
                 tvGenericBarcode.setText(barcode);
+                tvFinalSlot.setText("");
                 tvFinalSlot.requestFocus();
-            } else if (tvFinalSlot.isFocused() && !tvGenericBarcode.getText().toString().isEmpty() && !tvFinalSlot.getText().toString().isEmpty()) {
+            } else if (tvFinalSlot.isFocused()) {
                 tvFinalSlot.setText(barcode);
                 interactor.processLinkSackScan(tvGenericBarcode.getText().toString(), tvFinalSlot.getText().toString());
-            } else if (tvFinalSlot.isFocused() && tvGenericBarcode.getText().toString().isEmpty()) {
-                linkScanError(new MessageResponse("Generic barcode must be scanned before scanning the slot"));
             }
         }
     }
@@ -108,6 +121,7 @@ public class linkSackFragment extends AsyncInteractorFragment implements ISortin
     public void linkScanSuccessful(MessageResponse msg) {
         loadSackMessagePane.setBackgroundColor(Color.GREEN);
         tvErrorMessage.setText(msg.getMsg());
+        tvGenericBarcode.requestFocus();
     }
 
     /**
@@ -122,6 +136,14 @@ public class linkSackFragment extends AsyncInteractorFragment implements ISortin
         bus.post(new VibrateEvent(PrefsConsts.VIB_DURATION));
         tts(msg.getMsg());
         bus.post(new RingBeepEvent());
+        tvGenericBarcode.requestFocus();
+    }
+
+    public void slotClickAction(View view) {
+        if (StringUtils.isBlank(tvGenericBarcode.getText().toString())) {
+            linkScanError(new MessageResponse("Generic barcode must be scanned before scanning the slot"));
+        }
+        tvGenericBarcode.requestFocus();
     }
 
 }

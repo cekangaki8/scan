@@ -10,21 +10,21 @@ public class LinkSackRequest {
     /**
      * The scanned genericBarcode.
      */
-    private String scannedGenericBarcode;
+    private String GenericBarcode;
 
     /**
      * The finalslot for association.
      */
-    private String slot;
+    private String FinalSlot;
 
     /**
      * Constructor with scannedMailItemBarcode
      *
-     * @param scannedGenericBarcode scanned mail item barcode
+     * @param genericBarcode scanned mail item barcode
      */
-    public LinkSackRequest(String scannedGenericBarcode,String slot) {
-        this.scannedGenericBarcode = scannedGenericBarcode;
-        this.slot = slot;
+    public LinkSackRequest(String genericBarcode,String slot) {
+        this.GenericBarcode = genericBarcode;
+        this.FinalSlot = slot;
     }
 
     /**
@@ -32,33 +32,33 @@ public class LinkSackRequest {
      *
      * @return the genericBarcode
      */
-    public String getScannedGenericBarcode() {
-        return scannedGenericBarcode;
+    public String getGenericBarcode() {
+        return GenericBarcode;
     }
 
     /**
-     * Setter for the scannedGenericBarcode
+     * Setter for the GenericBarcode
      *
-     * @param scannedGenericBarcode scanned mail item barcode
+     * @param genericBarcode scanned mail item barcode
      */
-    public void setScannedGenericBarcode(String scannedGenericBarcode) {
-        this.scannedGenericBarcode = scannedGenericBarcode;
+    public void setGenericBarcode(String genericBarcode) {
+        this.GenericBarcode = genericBarcode;
     }
 
     /**
-     * Getter for the slot
-     * @return the slot
+     * Getter for the FinalSlot
+     * @return the FinalSlot
      */
-    public String getSlot() {
-        return slot;
+    public String getFinalSlot() {
+        return FinalSlot;
     }
 
     /**
-     * Setter for the slot
-     * @param slot scanned mail item barcode
+     * Setter for the FinalSlot
+     * @param finalSlot scanned mail item barcode
      */
-    public void setSlot(String slot) {
-        this.slot = slot;
+    public void setFinalSlot(String finalSlot) {
+        this.FinalSlot = finalSlot;
     }
 
 }

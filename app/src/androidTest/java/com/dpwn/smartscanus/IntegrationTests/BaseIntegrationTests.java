@@ -39,7 +39,7 @@ public class BaseIntegrationTests extends ActivityInstrumentationTestCase2<MainA
 
         Spinner spinner = solo.getView(Spinner.class, 0);
         solo.clickOnView(spinner);
-        solo.clickInList(2);
+        solo.clickInList(1);
 
         solo.clearEditText(etUserName);
         solo.clearEditText(etPassword);

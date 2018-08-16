@@ -15,7 +15,6 @@ import com.dpwn.smartscanus.newopsapi.IAuthenticationApi;
 import com.dpwn.smartscanus.newopsapi.ISortingServiceApi;
 import com.dpwn.smartscanus.newopsapi.NewOpsRestAdapter;
 import com.dpwn.smartscanus.sorting.ISortingServiceInputPort;
-import com.dpwn.smartscanus.sorting.interactor.SoritingServiceInteractor;
 import com.dpwn.smartscanus.sorting.interactor.SortingServiceInteractor;
 import com.dpwn.smartscanus.transport.ITUNestingInputPort;
 import com.dpwn.smartscanus.transport.interactor.LoadTUNestingInteractor;
@@ -106,7 +105,7 @@ public class MainModules implements Module {
         binder.bind(IDeliveryNetworkApi.class).toProvider(DeliveryNetworkProvider.class);
 
         //sorting interface interaction
-        binder.bind(ISortingServiceInputPort.class).to(SoritingServiceInteractor.class).asEagerSingleton();
+        binder.bind(ISortingServiceInputPort.class).to(SortingServiceInteractor.class).asEagerSingleton();
         binder.bind(ISortingServiceApi.class).toProvider(SortingServiceProvider.class);
 
     }
