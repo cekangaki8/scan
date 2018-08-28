@@ -55,7 +55,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 19
         versionCode 4
-        versionName "1.3.0"
+        versionName "1.3.2"
         testApplicationId 'com.dpwn.smartscanus.test'
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'
 

@@ -1,6 +1,7 @@
 package com.dpwn.smartscanus.sorting.ui;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -45,11 +46,14 @@ public class LinkSackFragment extends AsyncInteractorFragment implements ISortin
     @Inject
     ISortingServiceInputPort interactor;
 
+    int defaultColor;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvGenericBarcode.requestFocus();
+        ColorDrawable defaultPaneColor = (ColorDrawable) loadSackMessagePane.getBackground();
+        defaultColor = defaultPaneColor.getColor();
     }
     /**
      * Abstract method to get the interactors of the implementing Fragment
@@ -74,17 +78,17 @@ public class LinkSackFragment extends AsyncInteractorFragment implements ISortin
             tts("Please wait while in progress");
         } else {
 
-            if(!tvGenericBarcode.isFocused() && !tvFinalSlot.isFocused()) {
-                tvGenericBarcode.setText("");
-                tvFinalSlot.setText("");
-                tvGenericBarcode.requestFocus();
+            boolean isGenericBarcode = true;
+            if (StringUtils.isNotBlank(tvGenericBarcode.getText()) && StringUtils.isBlank(tvFinalSlot.getText())) {
+                isGenericBarcode = false;
             }
 
-            if (tvGenericBarcode.isFocused()) {
+            if (isGenericBarcode) {
                 tvGenericBarcode.setText(barcode);
                 tvFinalSlot.setText("");
-                tvFinalSlot.requestFocus();
-            } else if (tvFinalSlot.isFocused()) {
+                tvErrorMessage.setText("");
+                loadSackMessagePane.setBackgroundColor(defaultColor);
+            } else  {
                 tvFinalSlot.setText(barcode);
                 interactor.processLinkSackScan(tvGenericBarcode.getText().toString(), tvFinalSlot.getText().toString());
             }
@@ -138,12 +142,4 @@ public class LinkSackFragment extends AsyncInteractorFragment implements ISortin
         bus.post(new RingBeepEvent());
         tvGenericBarcode.requestFocus();
     }
-
-    public void slotClickAction(View view) {
-        if (StringUtils.isBlank(tvGenericBarcode.getText().toString())) {
-            linkScanError(new MessageResponse("Generic barcode must be scanned before scanning the slot"));
-        }
-        tvGenericBarcode.requestFocus();
-    }
-
 }
