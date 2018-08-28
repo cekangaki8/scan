@@ -113,6 +113,7 @@ public class MainActivity extends KioskModeActivity implements IFragmentContaine
         turnOnWifiAutomatically();
         prefUtils.initAdminMode();
         checkForUpdates();
+        toggleOrientationLockStatus(menu.findItem(R.id.action_lock_orientation));
     }
 
     @Override

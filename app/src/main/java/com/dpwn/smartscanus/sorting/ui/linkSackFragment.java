@@ -46,7 +46,7 @@ public class LinkSackFragment extends AsyncInteractorFragment implements ISortin
     @Inject
     ISortingServiceInputPort interactor;
 
-    int defaultColor;
+    int defaultColor = Color.parseColor("#F1F1F0");
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
