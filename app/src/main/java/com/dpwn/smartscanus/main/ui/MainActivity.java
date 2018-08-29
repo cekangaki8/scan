@@ -89,7 +89,7 @@ public class MainActivity extends KioskModeActivity implements IFragmentContaine
     private static Class<? extends Fragment> currentFragment = null;
     static Bundle currentFragmentArgs = null;
     private Menu menu;
-    private boolean isOrientationLocked;
+    private boolean isOrientationLocked = true;
     private volatile boolean showPowerDialog;
     private int counter;
     private String fragmentOrientation;
@@ -113,7 +113,6 @@ public class MainActivity extends KioskModeActivity implements IFragmentContaine
         turnOnWifiAutomatically();
         prefUtils.initAdminMode();
         checkForUpdates();
-        toggleOrientationLockStatus(menu.findItem(R.id.action_lock_orientation));
     }
 
     @Override
@@ -432,30 +431,6 @@ public class MainActivity extends KioskModeActivity implements IFragmentContaine
             consumeEvent = true;
         } else if (item.getItemId() == R.id.action_reset) {
             consumeEvent = true;
-       /* } else if (item.getItemId() == R.id.action_admin_mode) {
-            if (!item.isChecked()) {
-                dlgUtils.showDialogEditText(this, getString(R.string.admin_mode), getString(R.string.enter_password), true, getString(android.R.string.ok),
-                        new View.OnClickListener() {
-                            public void onClick(View v) {
-                                String value = dlgUtils.getInputText();
-                                if (value.equals("hiM6qsEP$s40")) {
-                                    prefUtils.activateAdminMode();
-                                    item.setChecked(ADMIN_MODE_ON);
-                                    final String msg = getString(R.string.admin_mode_activated);
-                                    bus.post(new ShowToastEvent(msg, ShowToastEvent.ToastDuration.SHORT).setColor(ShowToastEvent.ToastColor.GREEN));
-                                    bus.post(new TTSEvent(msg));
-                                } else {
-                                    final String msg = getString(R.string.incorrect_password);
-                                    bus.post(new ShowToastEvent(msg, ShowToastEvent.ToastDuration.SHORT).setColor(ShowToastEvent.ToastColor.RED));
-                                    bus.post(new TTSEvent(msg));
-                                }
-                            }
-                        });
-            } else {
-                prefUtils.deactivateAdminMode();
-                item.setChecked(ADMIN_MODE_OFF);
-            }
-            consumeEvent = true;  */
         } else if (id == android.R.id.home) {
             Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_frame);
             if (!(frag instanceof LoginFragment)) {
